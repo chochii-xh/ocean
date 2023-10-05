@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <style type="text/css">
+    .fish, .trash {
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+
+    body {
+      background-image: url('ocean.jpg');
+      margin: auto;
+      background-size: cover;
+    }
+
+    #instructions {
+      text-align: center;
+      padding: 20px;
+      font-size: 24px;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div id="instructions">바다를 청소해주세요!</div>
+
+  <script type="text/javascript">
+    var fishImages = ['fish1.png', 'fish2.png', 'fish3.png'];
+    var trashImages = ['trash1.png', 'trash2.png', 'trash3.png'];
+
+    var gameState = {
+      trashCount: 10
+    };
+
+    function randomBH(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function createImage(imageArray) {
+      var t = document.createElement('img');
+      var randomIndex = randomBH(0, imageArray.length - 1);
+      t.src = imageArray[randomIndex];
+      t.className = imageArray === fishImages ? 'fish' : 'trash';
+      t.style.width = randomBH(50, 120) + 'px';
+      t.style.height = 'auto';
+      t.style.left = Math.random() * (window.innerWidth - 130) + 'px';
+      t.style.top = Math.random() * (window.innerHeight - 150) + 'px';
+      document.body.appendChild(t);
+
+      if (imageArray === trashImages) {
+        t.addEventListener('click', function() {
+          handleTrashClick(t);
+        });
+      }
+    }
+
+    function handleTrashClick(trashImage) {
+      document.body.removeChild(trashImage);
+      gameState.trashCount--;
+      console.log('Trash remaining:', gameState.trashCount);
+
+      if (gameState.trashCount === 0) {
+        alert('감사합니다! 덕분에 바다가 깨끗해졌어요! -해양생물 일동-');
+      }
+    }
+
+    for (var i = 0; i < 50; i++) {
+      createImage(fishImages);
+    }
+
+    for (var j = 0; j < 10; j++) {
+      createImage(trashImages);
+    }
+  </script>
+</body>
+</html>
